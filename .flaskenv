@@ -1,0 +1,2 @@
+FLASK_APP=pageviews
+FLASK_ENV=development
