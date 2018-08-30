@@ -10,18 +10,21 @@ from . import (
 )
 
 
-def create_app():
+def create_app(environment='development'):
     app = Flask(__name__)
-    set_config(app)
-    db.init_app(app)
-    migrate.init_app(app, db)
+    load_config(app, environment)
+    init_db(app)
     register_blueprints(app)
     register_commands(app)
     return app
 
-def set_config(app):
-    ENV = app.config.get('ENV', 'default')
+def load_config(app, environment='development'):
+    ENV = app.config.get('ENV', environment)
     app.config.from_object(f'config.{ENV.title()}')
+
+def init_db(app):
+    db.init_app(app)
+    migrate.init_app(app, db)
 
 def register_blueprints(app):
     app.register_blueprint(api.blueprint)
