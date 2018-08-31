@@ -10,8 +10,12 @@ from webargs import fields
 from webargs.flaskparser import use_kwargs
 from marshmallow import Schema
 from marshmallow_enum import EnumField
+from sqlalchemy import and_
 
-from .models import Visit
+from .models import (
+    Visit,
+    User,
+)
 
 
 blueprint = Blueprint('api', __name__)
@@ -47,16 +51,29 @@ class FilterArgs(Schema):
 
 class UserCount(Resource):
 
+    @staticmethod
+    def query(os, device):
+        return User.query.join(User.visits).filter(
+            and_(
+                Visit.os.in_(os),
+                Visit.device.in_(device)
+            )
+        )
+
     @use_kwargs(FilterArgs())
     def get(self, **kwargs):
         return {
-            'count': FilterArgs().dump(kwargs)
+            'count': self.query(**kwargs).count()
         }
 
 
 class LoyalUserCount(UserCount):
 
-    pass
+    @staticmethod
+    def query(**kwargs):
+        return UserCount.query(**kwargs).filter(
+            User.is_loyal
+        )
 
 
 api.add_resource(UserCount, '/unique-users')
