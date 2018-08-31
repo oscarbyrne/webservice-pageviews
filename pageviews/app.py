@@ -3,6 +3,7 @@ from flask import Flask
 from .extensions import (
     db,
     migrate,
+    ma,
 )
 from . import (
     api,
@@ -13,7 +14,7 @@ from . import (
 def create_app(environment='development'):
     app = Flask(__name__)
     load_config(app, environment)
-    init_db(app)
+    init_extensions(app)
     register_blueprints(app)
     register_commands(app)
     return app
@@ -22,9 +23,10 @@ def load_config(app, environment='development'):
     ENV = app.config.get('ENV', environment)
     app.config.from_object(f'config.{ENV.title()}')
 
-def init_db(app):
+def init_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
+    ma.init_app(app)
 
 def register_blueprints(app):
     app.register_blueprint(api.blueprint)
