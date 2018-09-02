@@ -1,4 +1,5 @@
 from csv import DictReader
+from datetime import datetime
 
 import click
 from flask.cli import with_appcontext
@@ -22,7 +23,7 @@ def add_visits_from_file(file):
     
     for i, data in enumerate(reader):
 
-        datetime    = int(data['datetime'])
+        timestamp   = datetime.fromtimestamp(int(data['datetime']))
         user_id     = int(data['user'])
         os          = Visit.OsChoices(int(data['os']))
         device      = Visit.DeviceChoices(int(data['device']))
@@ -33,7 +34,7 @@ def add_visits_from_file(file):
 
         visit = Visit(
             id=i,
-            datetime=datetime,
+            datetime=timestamp,
             user=user,
             os=os,
             device=device

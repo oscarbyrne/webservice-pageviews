@@ -49,7 +49,7 @@ class UserCount(Resource):
     @use_kwargs(FilterArgs)
     def get(self, **kwargs):
         return {
-            'count': self.query(**kwargs).count()
+            'count': self.query(**kwargs).distinct().count()
         }
 
 
