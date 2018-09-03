@@ -28,9 +28,9 @@ class Visit(db.Model):
         SmartTV =  4
         Watch = 5
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     datetime = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), nullable=False)
     os = db.Column(db.Enum(OsChoices), nullable=False)
     device = db.Column(db.Enum(DeviceChoices), nullable=False)
 
@@ -63,7 +63,7 @@ class User(db.Model):
 
     LOYALTY_CUTOFF = 10
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     visits = db.relationship('Visit', backref=db.backref('user', lazy=True))
 
     @hybrid_property
