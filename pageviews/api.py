@@ -34,6 +34,9 @@ class FilterArgs(Schema):
         missing=[choice.value for choice in Visit.DeviceChoices]
     )
 
+    class Meta:
+        strict = True
+
 
 class UserCount(Resource):
 
