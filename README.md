@@ -5,15 +5,9 @@ Flask webservice for calculating statistics for webpage visits
 ## To use
 
 ```shell
-$ export DATABASE_URI=sqlite:////tmp/test.db
-$ pip install -r requirements.txt
+$ sed -e "s/{{ DATABASE_URI }}/$DATABASE_URI/g" .env.template > .env
 $ flask db upgrade
 $ flask add_visits_from_file data.csv
-$ flask run
+$ docker build -t pageviews:latest .
+$ docker run -p 5000:5000 --name pageviews --rm pageviews:latest
 ```
-
-## To do
-
-- implement `models.User.is_loyal`
-- containerize / deploy
-- improve documentation
