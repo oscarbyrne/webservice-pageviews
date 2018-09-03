@@ -61,7 +61,7 @@ class User(db.Model):
 
     __tablename__ = 'user'
 
-    LOYALTY_CUTOFF = 5
+    LOYALTY_CUTOFF = 10
 
     id = db.Column(db.Integer, primary_key=True)
     visits = db.relationship('Visit', backref=db.backref('user', lazy=True))
